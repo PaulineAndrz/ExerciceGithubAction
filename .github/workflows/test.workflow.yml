@@ -20,7 +20,6 @@ jobs:
           pip install -U pytest
       - name: Run unit tests
         run: pytest
-      - run: exit 1
 
   create-alert:
     runs-on: ubuntu-latest
