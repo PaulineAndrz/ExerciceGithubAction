@@ -20,3 +20,21 @@ jobs:
           pip install -U pytest
       - name: Run unit tests
         run: pytest
+      - name: fail
+      - run: exit 1
+
+  create-alert:
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: always() && (needs.test.result == 'failure')
+    steps:
+      - name: Create issue if fail test
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ github.token }}
+          title: Test Unitaire Fail
+          body: |
+            Les tests ont échoué
+            Workflow name : `${{ github.workflow }}`
+            Job name : `${{ github.job }}`
+            User name : `${{ github.actor }}`
